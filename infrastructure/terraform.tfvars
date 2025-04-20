@@ -1,0 +1,6 @@
+aws_region = "us-east-1"
+project_name = "3d-ecommerce"
+environment = "dev"
+domain_name = "your-domain.com"
+db_username = "admin"
+db_password = "your-secure-password" 

@@ -5,11 +5,12 @@ terraform {
       version = "~> 5.0"
     }
   }
-  backend "s3" {
-    bucket = "your-terraform-state-bucket"
-    key    = "3d-ecommerce/terraform.tfstate"
-    region = "us-east-1"
-  }
+  # Commenting out S3 backend temporarily
+  # backend "s3" {
+  #   bucket = "your-terraform-state-bucket"
+  #   key    = "3d-ecommerce/terraform.tfstate"
+  #   region = "us-east-1"
+  # }
 }
 
 provider "aws" {
