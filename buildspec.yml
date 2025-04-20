@@ -1,0 +1,60 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - npm install -g typescript
+      - npm install -g pnpm
+      
+  pre_build:
+    commands:
+      # Install dependencies for frontend
+      - cd frontend
+      - pnpm install
+      - cd ..
+      
+      # Install dependencies for backend
+      - cd backend
+      - pnpm install
+      - cd ..
+      
+  build:
+    commands:
+      # Build frontend
+      - cd frontend
+      - pnpm run build
+      - cd ..
+      
+      # Build backend
+      - cd backend
+      - pnpm run build
+      - cd ..
+      
+  post_build:
+    commands:
+      # Prepare deployment package
+      - mkdir -p dist
+      - cp -r backend/dist/* dist/
+      - cp backend/package.json dist/
+      - cp backend/pnpm-lock.yaml dist/
+      - cp -r frontend/dist dist/public
+      - cp buildspec.yml dist/
+      - cp Procfile dist/
+      
+      # Create deployment artifact
+      - cd dist
+      - zip -r ../deployment.zip .
+      - cd ..
+
+artifacts:
+  files:
+    - deployment.zip
+  discard-paths: no
+
+cache:
+  paths:
+    - 'frontend/node_modules/**/*'
+    - 'backend/node_modules/**/*'
+    - '/root/.pnpm-store/**/*' 
